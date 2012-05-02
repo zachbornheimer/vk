@@ -4,22 +4,23 @@ AutoItSetOption("ExpandEnvStrings", 1)
 Run("stopper.exe")
 
 While 1
-	$ping_result = Ping("zysys.org")
-	if $ping_result > 0 Then
-		;MsgBox(0, "Internet!", "You have internet.  Initializing procedure Gamma Delta Omicron.", 3)
-		fixtime()
+    $ping_result = Ping("zysys.org")
+    if $ping_result > 0 Then
+    	;MsgBox(0, "Internet!", "You have internet.  Initializing procedure Gamma Delta Omicron.", 3)
+    	fixtime()
                 $items = listStartupItems()
-		for $i = 1 to UBound($items) - 1
-		   ;MsgBox(0, "Startup Items", $items[$i])
-		Next
-		ExitLoop
-	Else
-		;MsgBox(0, "No Internet!", "You do not have internet.  Initializing procedure Beta Pi Epsilon.", 3)
-		internetFix()
-	Endif
+    	for $i = 1 to UBound($items) - 1
+    	   ;MsgBox(0, "Startup Items", $items[$i])
+    	Next
+    	ExitLoop
+    Else
+    	;MsgBox(0, "No Internet!", "You do not have internet.  Initializing procedure Beta Pi Epsilon.", 3)
+    	internetFix()
+    Endif
 WEnd
 
 ;fixtime()
+mbamDownload()
 
 MsgBox(0, '!!!', "Install Malwarebytes' Anti-Malware", 3);
 RunWait("mbam-setup.exe")
@@ -29,106 +30,110 @@ MsgBox(0, '!!!', "Keep this device in the computer after completion", 3)
 MsgBox(0, '!!!', "When you restart, log in again.  The computer will launch CCleaner.  Run the registry cleaner componant.", 3);
 RunWait("%ProgramFiles%\Malwarebytes' Anti-Malware\mbam.exe")
 
+func mbamDownload()
+    RunWait("getmbam.exe")
+EndFunc
+
 
 func listStartupItems()
 Dim $keys[1], $i
 $i = 1
    While 1
-	  Local $regpath = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-	  Local $var = RegEnumVal($regpath, $i)
-	  Local $path = RegRead($regpath, $var)
-	  Local $pathArray = StringSplit($path, '\')
-	  If @error <> 0 Then ExitLoop
-	  Local $bound = UBound($keys)
-	  ReDim $keys[$bound + 1]
-	  $keys[$bound] = $pathArray[UBound($pathArray) - 1]
-	  checkItem($keys[$bound], $var, $regpath)
-	  $i += 1
+      Local $regpath = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+      Local $var = RegEnumVal($regpath, $i)
+      Local $path = RegRead($regpath, $var)
+      Local $pathArray = StringSplit($path, '\')
+      If @error <> 0 Then ExitLoop
+      Local $bound = UBound($keys)
+      ReDim $keys[$bound + 1]
+      $keys[$bound] = $pathArray[UBound($pathArray) - 1]
+      checkItem($keys[$bound], $var, $regpath)
+      $i += 1
    WEnd
    $i = 1
    While 1
-	  Local $regpath = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
-	  Local $var = RegEnumVal($regpath, $i)
-	  Local $path = RegRead($regpath, $var)
-	  Local $pathArray = StringSplit($path, '\')
-	  If @error <> 0 Then ExitLoop
-	  Local $bound = UBound($keys)
-	  ReDim $keys[$bound + 1]
-	  $keys[$bound] = $pathArray[UBound($pathArray) - 1]
-	  checkItem($keys[$bound], $var, $regpath)
-	  $i += 1
+      Local $regpath = "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+      Local $var = RegEnumVal($regpath, $i)
+      Local $path = RegRead($regpath, $var)
+      Local $pathArray = StringSplit($path, '\')
+      If @error <> 0 Then ExitLoop
+      Local $bound = UBound($keys)
+      ReDim $keys[$bound + 1]
+      $keys[$bound] = $pathArray[UBound($pathArray) - 1]
+      checkItem($keys[$bound], $var, $regpath)
+      $i += 1
    WEnd
    $i = 1
    While 1
-	  Local $regpath = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
-	  Local $var = RegEnumVal($regpath, $i)
-	  Local $path = RegRead($regpath, $var)
-	  Local $pathArray = StringSplit($path, '\')
-	  If @error <> 0 Then ExitLoop
-	  Local $bound = UBound($keys)
-	  ReDim $keys[$bound + 1]
-	  $keys[$bound] = $pathArray[UBound($pathArray) - 1]
-	  checkItem($keys[$bound], $var, $regpath)
-	  $i += 1
+      Local $regpath = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
+      Local $var = RegEnumVal($regpath, $i)
+      Local $path = RegRead($regpath, $var)
+      Local $pathArray = StringSplit($path, '\')
+      If @error <> 0 Then ExitLoop
+      Local $bound = UBound($keys)
+      ReDim $keys[$bound + 1]
+      $keys[$bound] = $pathArray[UBound($pathArray) - 1]
+      checkItem($keys[$bound], $var, $regpath)
+      $i += 1
    WEnd
    $i = 1
    While 1
-	  Local $regpath = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"
-	  Local $var = RegEnumVal($regpath, $i)
-	  Local $path = RegRead($regpath, $var)
-	  Local $pathArray = StringSplit($path, '\')
-	  If @error <> 0 Then ExitLoop
-	  Local $bound = UBound($keys)
-	  ReDim $keys[$bound + 1]
-	  $keys[$bound] = $pathArray[UBound($pathArray) - 1]
-	  checkItem($keys[$bound], $var, $regpath)
-	  $i += 1
+      Local $regpath = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+      Local $var = RegEnumVal($regpath, $i)
+      Local $path = RegRead($regpath, $var)
+      Local $pathArray = StringSplit($path, '\')
+      If @error <> 0 Then ExitLoop
+      Local $bound = UBound($keys)
+      ReDim $keys[$bound + 1]
+      $keys[$bound] = $pathArray[UBound($pathArray) - 1]
+      checkItem($keys[$bound], $var, $regpath)
+      $i += 1
    WEnd
    return $keys
 EndFunc
 
 func checkItem($program, $key, $path)
    if RunWait('progSafteyDiagnostic.exe ' & $program) == 2 Then
-	  RegDelete($path, $key)
-	  MsgBox(0, "Removal", "Removed " & $program, 3)
+      RegDelete($path, $key)
+      MsgBox(0, "Removal", "Removed " & $program, 3)
    EndIf
 EndFunc
 
 func fixtime()
-   	MsgBox(0, "Time", "Fixing your Clock...Please be patient.", 4)
+    MsgBox(0, "Time", "Fixing your Clock...Please be patient.", 4)
     RunWait('fixtime.exe date')
-	$date = FileReadLine("date")
+    $date = FileReadLine("date")
     RunWait('fixtime.exe time')
     $time = FileReadLine("time")
     $date = StringSplit($date, "")
     $time = StringSplit($time, "")
     ; Note, to prevent loss of a front zero, a 1 is prepended to the date/time strings
-	; it is also done to obscure the data.
+    ; it is also done to obscure the data.
     $date = $date[2] & $date[3] & '/' & $date[4] & $date[5] & '/' & $date[6] & $date[7]
     $time = $time[2] & $time[3] & ':' & $time[4] & $time[5] & ':' & $time[6] & $time[7]
     $datecmd = 'date ' & $date
-	Run(@ComSpec & ' /k date ' & $date, '', @SW_HIDE)
-	Run(@ComSpec & ' /k time ' & $time, '', @SW_HIDE)
-	FileDelete("date")
-	FileDelete("time")
-	RunWait("w32tm /resync", '', @SW_DISABLE)
+    Run(@ComSpec & ' /k date ' & $date, '', @SW_HIDE)
+    Run(@ComSpec & ' /k time ' & $time, '', @SW_HIDE)
+    FileDelete("date")
+    FileDelete("time")
+    RunWait("w32tm /resync", '', @SW_DISABLE)
 EndFunc
 
 func repairInternet()
-	RunWait("route -f")
-	RunWait("ipconfig /release")
-	RunWait("ipconfig /renew")
-	RunWait("arp -d *")
-	RunWait("nbtstat -R")
-	RunWait("nbtstat -RR")
-	RunWait("ipconfig /flushdns")
-	RunWait("ipconfig /registerdns")
+    RunWait("route -f")
+    RunWait("ipconfig /release")
+    RunWait("ipconfig /renew")
+    RunWait("arp -d *")
+    RunWait("nbtstat -R")
+    RunWait("nbtstat -RR")
+    RunWait("ipconfig /flushdns")
+    RunWait("ipconfig /registerdns")
 EndFunc
 
 
 func internetFix()
-	   fixLanSettings()
-	   repairInternet()
+    fixLanSettings()
+    repairInternet()
 EndFunc
 
 func fixLanSettings()
