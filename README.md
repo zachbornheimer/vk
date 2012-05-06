@@ -11,3 +11,15 @@ This program's goal is to be able to run from a jump drive.  Upon running the pr
 4. Run Malware-Bytes to remove malicious items
 5. Reboot
 6. Run CCleaner Registry cleaner
+
+
+
+Required Files for Execution
+
+fixtime.exe
+progSafteyDiagnostic.exe
+stopper.exe
+vk.exe
+getmbam.exe
+finisher.exe
+CCleaner.exe
